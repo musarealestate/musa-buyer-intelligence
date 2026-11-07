@@ -1,7 +1,42 @@
 name: MUSA Buyer Research Engine
 
-"on":
+on:
   workflow_dispatch:
+    inputs:
+      country:
+        description: "Country"
+        required: false
+        default: "United States"
+        type: string
+      state:
+        description: "State"
+        required: false
+        type: string
+      city:
+        description: "City"
+        required: false
+        type: string
+      county:
+        description: "County"
+        required: false
+        type: string
+      zip:
+        description: "ZIP Code"
+        required: false
+        type: string
+      investorType:
+        description: "Investor Type"
+        required: false
+        type: string
+      searchQuery:
+        description: "Research Instructions"
+        required: false
+        type: string
+      sourceTarget:
+        description: "Research Sources"
+        required: false
+        default: "Public web research"
+        type: string
 
 permissions:
   contents: read
@@ -21,4 +56,13 @@ jobs:
           python-version: "3.12"
 
       - name: Run MUSA Research
+        env:
+          INPUT_COUNTRY: ${{ inputs.country }}
+          INPUT_STATE: ${{ inputs.state }}
+          INPUT_CITY: ${{ inputs.city }}
+          INPUT_COUNTY: ${{ inputs.county }}
+          INPUT_ZIP: ${{ inputs.zip }}
+          INPUT_INVESTOR_TYPE: ${{ inputs.investorType }}
+          INPUT_SEARCH_QUERY: ${{ inputs.searchQuery }}
+          INPUT_SOURCE_TARGET: ${{ inputs.sourceTarget }}
         run: python engine/search_sources.py
