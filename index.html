@@ -1,1 +1,354 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MUSA | Buyer Intelligence</title>
+<style>
+:root{
+  --navy:#101C2C;
+  --ivory:#F7F5F0;
+  --gold:#B69A62;
+  --ink:#292D32;
+  --muted:#85898D;
+  --line:#E5E0D6;
+  --white:#FFFFFF;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ivory);color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
+}
+header{
+  background:var(--navy);color:var(--ivory);
+  padding:25px 6%;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;
+}
+.brand{font-family:Georgia,serif;font-size:25px;letter-spacing:2px}
+.brand span{color:var(--gold)}
+.header-note{font-size:11px;letter-spacing:2px;color:#C9C3B7}
+main{max-width:1180px;margin:42px auto;padding:0 22px}
+.eyebrow{font-size:11px;letter-spacing:3px;color:var(--gold);font-weight:bold}
+h1,h2{font-family:Georgia,serif;font-weight:normal}
+h1{font-size:clamp(34px,5vw,52px);margin:12px 0}
+.intro{color:#74777B;max-width:650px;line-height:1.7;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:35px 0}
+.stat{
+  background:white;border:1px solid var(--line);
+  padding:23px;border-radius:4px;
+}
+.stat small{font-size:10px;letter-spacing:2px;color:var(--muted)}
+.stat strong{display:block;font-family:Georgia,serif;font-size:34px;margin-top:12px;color:var(--navy)}
+.layout{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
+.panel{
+  background:white;border:1px solid var(--line);
+  padding:27px;border-radius:4px;
+}
+.panel h2{font-size:25px;margin:0 0 8px}
+.sub{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+label{display:block;font-size:11px;letter-spacing:1px;font-weight:bold;margin:17px 0 8px}
+input,select,textarea{
+  width:100%;padding:13px;border:1px solid var(--line);
+  background:#FDFCFA;color:var(--ink);font:13px Arial;
+  border-radius:2px;outline:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{min-height:100px;resize:vertical;line-height:1.6}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+button{
+  border:0;padding:14px 20px;background:var(--navy);
+  color:white;font-size:11px;letter-spacing:1.5px;
+  font-weight:bold;cursor:pointer;width:100%;margin-top:22px;
+}
+button:hover{background:#24364C}
+button.secondary{background:transparent;color:var(--navy);border:1px solid var(--line)}
+.status{font-size:12px;line-height:1.6;margin-top:15px;color:#68716E;overflow-wrap:anywhere}
+.connection{padding:17px;background:#F8F6F1;border:1px solid var(--line);margin-top:20px}
+.connection strong{font-size:12px}
+.connection p{font-size:11px;color:var(--muted);line-height:1.6}
+.queue-item{padding:14px 0;border-bottom:1px solid var(--line);font-size:12px;line-height:1.6}
+.queue-item:last-child{border-bottom:0}
+.queue-item strong{display:block;color:var(--navy);font-size:13px}
+.tag{display:inline-block;color:#7A663D;background:#F3EEDF;padding:4px 8px;font-size:10px;margin-top:6px}
+footer{text-align:center;padding:30px;color:#92918B;font-size:10px;letter-spacing:1px}
+@media(max-width:760px){
+  .layout{grid-template-columns:1fr}
+  .stats{gap:8px}
+  .stat{padding:15px}
+  .stat strong{font-size:27px}
+  header{padding:20px}
+  .header-note{font-size:9px}
+}
+@media(max-width:430px){.two{grid-template-columns:1fr}.brand{font-size:20px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">MUSA <span>INTELLIGENCE</span></div>
+  <div class="header-note">REAL ESTATE · BUYER RESEARCH</div>
+</header>
+
+<main>
+  <div class="eyebrow">BUYER DISCOVERY SYSTEM</div>
+  <h1>Find the Right Buyers.<br>Understand Their Market.</h1>
+  <p class="intro">
+    Organize buyer research by location, investor type and acquisition interest.
+    Submit research tasks and monitor your existing Google Sheets queue.
+  </p>
+
+  <section class="stats">
+    <div class="stat">
+      <small>TOTAL RESEARCH TASKS</small>
+      <strong id="total">—</strong>
+    </div>
+    <div class="stat">
+      <small>PENDING TASKS</small>
+      <strong id="pending">—</strong>
+    </div>
+    <div class="stat">
+      <small>COMPLETED TASKS</small>
+      <strong id="completed">—</strong>
+    </div>
+  </section>
+
+  <div class="layout">
+    <section class="panel">
+      <h2>Start Buyer Research</h2>
+      <p class="sub">Define your target market and submit a research task to your Google Sheets CRM.</p>
+
+      <form id="researchForm">
+        <label>COUNTRY</label>
+        <input name="country" value="United States" required>
+
+        <div class="two">
+          <div>
+            <label>STATE</label>
+            <input name="state" placeholder="e.g. Ohio" required>
+          </div>
+          <div>
+            <label>CITY</label>
+            <input name="city" placeholder="e.g. Cleveland">
+          </div>
+        </div>
+
+        <div class="two">
+          <div>
+            <label>COUNTY</label>
+            <input name="county" placeholder="Optional">
+          </div>
+          <div>
+            <label>ZIP CODE</label>
+            <input name="zip" placeholder="Optional">
+          </div>
+        </div>
+
+        <label>TARGET INVESTOR TYPE</label>
+        <select name="investorType" required>
+          <option value="">Select target</option>
+          <option>Cash Buyers</option>
+          <option>Real Estate Developers</option>
+          <option>House Flippers</option>
+          <option>Buy and Hold Investors</option>
+          <option>Landlords</option>
+          <option>Wholesalers</option>
+          <option>All Investor Types</option>
+        </select>
+
+        <label>RESEARCH SOURCES</label>
+        <select name="sourceTarget">
+          <option>Public web research</option>
+          <option>Public Facebook pages and posts</option>
+          <option>Company websites and directories</option>
+          <option>Public social media and websites</option>
+        </select>
+
+        <label>RESEARCH INSTRUCTIONS / KEYWORDS</label>
+        <textarea name="searchQuery" placeholder="Example: Find Cleveland investors publicly expressing interest in rental properties, off-market houses, fix and flips and property development. Research company websites, leadership and publicly listed business contact details."></textarea>
+
+        <button type="submit" id="submitBtn">SUBMIT RESEARCH TASK</button>
+        <div class="status" id="submitStatus" role="status"></div>
+      </form>
+    </section>
+
+    <aside>
+      <section class="panel">
+        <h2>Research Queue</h2>
+        <p class="sub">Latest tasks recorded in your existing Google Sheets CRM.</p>
+        <button class="secondary" id="refreshBtn" type="button">REFRESH DASHBOARD</button>
+        <div id="queueList" class="status">Connect your dashboard to load queue information.</div>
+      </section>
+
+      <section class="connection">
+        <strong>BACKEND CONNECTION</strong>
+        <p>Enter your private dashboard token below. It is kept only in this browser tab's session and is not part of the public GitHub source code.</p>
+        <label>PRIVATE ACCESS TOKEN</label>
+        <input id="token" type="password" placeholder="Paste your Apps Script token" autocomplete="off">
+        <button type="button" id="connectBtn">CONNECT GOOGLE SHEETS</button>
+        <div class="status" id="connectionStatus" role="status">Not connected</div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<footer>MUSA REAL ESTATE COMMUNITY · BUYER INTELLIGENCE</footer>
+
+<iframe name="submitFrame" id="submitFrame" style="display:none"></iframe>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbx-R-umALB05MJZTsiFDb9-lcK_rISw0LlYpMiq09of5XWeQmggDs2RzwTIkA8phgDX4A/exec";
+
+const tokenInput = document.getElementById("token");
+const connectionStatus = document.getElementById("connectionStatus");
+const submitStatus = document.getElementById("submitStatus");
+const queueList = document.getElementById("queueList");
+const submitBtn = document.getElementById("submitBtn");
+
+let requestNumber = 0;
+
+function getToken(){
+  return tokenInput.value.trim();
+}
+
+function connectDashboard(){
+  const token = getToken();
+  if(!token){
+    connectionStatus.textContent = "Please enter your private token.";
+    return;
+  }
+
+  sessionStorage.setItem("musa_dashboard_token", token);
+  connectionStatus.textContent = "Checking connection...";
+
+  const callback = "musaCallback" + (++requestNumber);
+  const script = document.createElement("script");
+  const timeout = setTimeout(() => {
+    cleanup();
+    connectionStatus.textContent = "Connection timed out. Check deployment and token.";
+  }, 15000);
+
+  function cleanup(){
+    clearTimeout(timeout);
+    delete window[callback];
+    script.remove();
+  }
+
+  window[callback] = function(data){
+    cleanup();
+    if(!data || !data.success){
+      connectionStatus.textContent = data?.message || "Connection failed.";
+      return;
+    }
+    connectionStatus.textContent = "Connected to Google Sheets.";
+    updateDashboard(data);
+  };
+
+  script.onerror = function(){
+    cleanup();
+    connectionStatus.textContent = "Could not reach Apps Script. Check deployment access.";
+  };
+
+  script.src = API_URL +
+    "?action=dashboard&token=" + encodeURIComponent(token) +
+    "&callback=" + callback +
+    "&_=" + Date.now();
+
+  document.body.appendChild(script);
+}
+
+function updateDashboard(data){
+  document.getElementById("total").textContent = data.total ?? 0;
+  document.getElementById("pending").textContent = data.pending ?? 0;
+  document.getElementById("completed").textContent = data.completed ?? 0;
+
+  queueList.innerHTML = "";
+
+  if(!data.recent || !data.recent.length){
+    queueList.textContent = "No research tasks found yet.";
+    return;
+  }
+
+  data.recent.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "queue-item";
+
+    const title = document.createElement("strong");
+    title.textContent =
+      [item.City, item.State, item["Investor Type"]]
+      .filter(Boolean).join(" · ") || "Research task";
+
+    const details = document.createElement("div");
+    details.textContent = item["Search Query"] || item["Research Query"] || "Research instructions not available";
+
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = item["Research Status"] || item.Status || "Queued";
+
+    div.append(title, details, tag);
+    queueList.appendChild(div);
+  });
+}
+
+document.getElementById("connectBtn").addEventListener("click", connectDashboard);
+document.getElementById("refreshBtn").addEventListener("click", connectDashboard);
+
+tokenInput.value = sessionStorage.getItem("musa_dashboard_token") || "";
+
+document.getElementById("researchForm").addEventListener("submit", function(event){
+  event.preventDefault();
+
+  const token = getToken();
+  if(!token){
+    submitStatus.textContent = "Connect Google Sheets first by entering your private token.";
+    return;
+  }
+
+  const form = event.currentTarget;
+  const values = new FormData(form);
+
+  const outgoing = document.createElement("form");
+  outgoing.method = "POST";
+  outgoing.action = API_URL;
+  outgoing.target = "submitFrame";
+  outgoing.style.display = "none";
+
+  const payload = {
+    action: "addTask",
+    token: token,
+    country: values.get("country"),
+    state: values.get("state"),
+    city: values.get("city"),
+    county: values.get("county"),
+    zip: values.get("zip"),
+    investorType: values.get("investorType"),
+    sourceTarget: values.get("sourceTarget"),
+    searchQuery: values.get("searchQuery")
+  };
+
+  Object.entries(payload).forEach(([key,value]) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = value || "";
+    outgoing.appendChild(input);
+  });
+
+  document.body.appendChild(outgoing);
+  submitBtn.disabled = true;
+  submitBtn.textContent = "SENDING...";
+  submitStatus.textContent = "Task submission sent. Checking your Google Sheet queue is required to confirm receipt.";
+
+  outgoing.submit();
+
+  setTimeout(() => {
+    outgoing.remove();
+    submitBtn.disabled = false;
+    submitBtn.textContent = "SUBMIT RESEARCH TASK";
+    submitStatus.textContent = "Submission sent. Refresh the dashboard and check the RESEARCH QUEUE tab in Google Sheets to confirm it was recorded.";
+  }, 2500);
+});
+</script>
+</body>
+</html>
+
