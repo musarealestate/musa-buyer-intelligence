@@ -1,37 +1,50 @@
+
 name: MUSA Buyer Research Engine
 
 on:
   workflow_dispatch:
     inputs:
+      searchId:
+        description: "MUSA Research Search ID"
+        required: true
+        type: string
+
       country:
         description: "Country"
         required: false
         default: "United States"
         type: string
+
       state:
         description: "State"
         required: false
         type: string
+
       city:
         description: "City"
         required: false
         type: string
+
       county:
         description: "County"
         required: false
         type: string
+
       zip:
         description: "ZIP Code"
         required: false
         type: string
+
       investorType:
         description: "Investor Type"
         required: false
         type: string
+
       searchQuery:
         description: "Research Instructions"
         required: false
         type: string
+
       sourceTarget:
         description: "Research Sources"
         required: false
@@ -45,6 +58,7 @@ jobs:
   research:
     name: Public Buyer Research
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -57,6 +71,7 @@ jobs:
 
       - name: Run MUSA Research
         env:
+          INPUT_SEARCH_ID: ${{ inputs.searchId }}
           INPUT_COUNTRY: ${{ inputs.country }}
           INPUT_STATE: ${{ inputs.state }}
           INPUT_CITY: ${{ inputs.city }}
@@ -65,4 +80,8 @@ jobs:
           INPUT_INVESTOR_TYPE: ${{ inputs.investorType }}
           INPUT_SEARCH_QUERY: ${{ inputs.searchQuery }}
           INPUT_SOURCE_TARGET: ${{ inputs.sourceTarget }}
+
+          MUSA_SHEETS_API_URL: ${{ secrets.MUSA_SHEETS_API_URL }}
+          MUSA_SHEETS_TOKEN: ${{ secrets.MUSA_SHEETS_TOKEN }}
+
         run: python engine/search_sources.py
